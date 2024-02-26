@@ -1,13 +1,14 @@
 const Navbar = () => {
   return (
-    <div className="bg-blue-400 p-5 text-xl tracking-tighter">
-      <div className="container px-10 flex justify-between">
-        <h1>Feedback Fleet</h1>
-        <ul className="flex space-x-3">
+    <div className="bg-blue-400 p-3 text-white">
+      <div className="container px-10 flex justify-between items-center">
+        <h1 className="text-xl tracking-tighter">Feedback Fleet</h1>
+        <ul className="flex space-x-3 tracking-wider">
           <li>Home</li>
           <li>About</li>
+          <li>Contact</li>
         </ul>
-        <ul className="flex space-x-3">
+        <ul className="flex space-x-3 tracking-tight">
           <li>Login</li>
           <li>Register</li>
         </ul>
