@@ -1,7 +1,7 @@
 const Navbar = () => {
   return (
     <div className="bg-blue-400 p-3 text-white">
-      <div className="container px-10 flex justify-between items-center">
+      <div className="container mx-auto px-8 flex justify-between items-center">
         <h1 className="text-xl tracking-tighter">Feedback Fleet</h1>
         <ul className="flex space-x-3 tracking-wider">
           <li>Home</li>
