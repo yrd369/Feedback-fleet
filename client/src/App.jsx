@@ -1,15 +1,14 @@
-import Card from "./components/Card";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <div className="font-poppins">
+    <>
       <Navbar />
-      <div className="bg-gray-300 grid grid-cols-4">
-        <Card title="CyberDude" desc="desc" />
-        <Card title="Mongo DB" desc="desc" />
-      </div>
-    </div>
+      <Outlet />
+      <Footer />
+    </>
   );
 }
 
