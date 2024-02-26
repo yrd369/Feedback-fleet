@@ -1,9 +1,10 @@
-const Card = ({title,desc}) => {
+const Card = ({ title, desc, image }) => {
   return (
-    <div className="bg-gray-300 p-10">
+    <div className="bg-gray-300 p-10 ">
       <div className="bg-white rounded p-5">
-        <h1>{title}</h1>
-        <p>{desc}</p>
+        <img src={image} />
+        <h1 className="text-xl font-semibold">{title}</h1>
+        <p className = "tracking-wide">{desc}</p>
       </div>
     </div>
   );
