@@ -17,7 +17,7 @@ function Homepage() {
     <>
       <Hero />
       <div className="mt-10 px-5">
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-4 gap-3 gap-y-10">
         {products.map((product, index) => {
           return (
             <Link to={"/desc/" + product.data().productName} key={index}>
