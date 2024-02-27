@@ -3,6 +3,7 @@ import { db } from "../../server/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Hero from "../components/Hero.jsx";
 function Homepage() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -12,21 +13,25 @@ function Homepage() {
     }
     getData();
   }, []);
-
   return (
-    <div className="bg-gray-300 grid grid-cols-4">
-      {products.map((product, index) => {
-        return (
-          <Link to={"/desc/" + product.data().productName} key={index}>
-            <Card
-              key={index}
-              desc={product.data().productName}
-              image = {product.data().productImage}
-            />
-          </Link>
-        );
-      })}
-    </div>
+    <>
+      <Hero />
+      <div className="mt-10 px-5">
+      <div className="grid grid-cols-4">
+        {products.map((product, index) => {
+          return (
+            <Link to={"/desc/" + product.data().productName} key={index}>
+              <Card
+                key={index}
+                productName={product.data().productName}
+                image={product.data().productImage}
+              />
+            </Link>
+          );
+        })}
+      </div>
+      </div>
+    </>
   );
 }
 

@@ -2,21 +2,20 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="bg-gray-900 p-3 text-white font-poppins">
-      <div className="container mx-auto px-8 flex justify-between items-center">
+    <div className="bg-[#ED6926] p-3 text-white font-poppins">
+      <div className="container mx-auto px-10 flex justify-between items-center">
         <h1 className="text-xl tracking-tighter">Feedback Fleet</h1>
         <ul className="flex space-x-3 tracking-wider">
           <Link to="/">
             <li>Home</li>
           </Link>
-          <Link to={"/feedbackform"}>
-            <li>Product feedback</li>
-          </Link>
+          <li>About</li>
           <li>Contact</li>
         </ul>
         <ul className="flex space-x-3 tracking-tight">
-          <li>Login</li>
-          <li>Register</li>
+          <Link to={"/feedbackform"}>
+            <li className="bg-[#FEF7ED] text-black px-4 py-1 rounded-md">Add review</li>
+          </Link>
         </ul>
       </div>
     </div>

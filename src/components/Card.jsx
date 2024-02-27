@@ -1,11 +1,9 @@
-const Card = ({ title, desc, image }) => {
+const Card = ({ productName, image }) => {
   return (
-    <div className="bg-gray-300 p-10 ">
-      <div className="bg-white rounded p-5">
-        <img src={image} />
-        <h1 className="text-xl font-semibold">{title}</h1>
-        <p className = "tracking-wide">{desc}</p>
-      </div>
+    <div className="rounded-lg flex-col justify-center text-center border">
+      <img src={image} className="rounded-lg w-40 mx-auto"/>
+      <p className="font-semibold tracking-wide mt-2">{productName}</p>
+      <p className="mt-1">Iphone is wonderfull product</p>
     </div>
   );
 };
