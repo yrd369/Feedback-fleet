@@ -1,7 +1,12 @@
 import { doc, setDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { db } from "../../server/firebase";
+import dayjs from "dayjs";
+
 const Feedbackform = () => {
+  function formatMyDate(date, format = "DD, MMM - YYYY, hh:mma") {
+    return (dayjs(date).format(format));
+  }
   const {
     register,
     handleSubmit,
@@ -10,9 +15,7 @@ const Feedbackform = () => {
   const sendData = (data) => {
     const querySnapshot = setDoc(doc(db, "products", data.productName), data);
     alert(`Thank you for sharing your opinion. ✅`);
-    console.log(data);
   };
-  console.log(errors);
   return (
     <div className="bg-[#FEF7ED] p-10">
       <form
@@ -77,6 +80,7 @@ const Feedbackform = () => {
             </small>
           )}
         </div>
+        <input value={formatMyDate()} className="text-black" name="time" {...register("time")}/>
         <button className="bg-green-500 px-4 py-1 rounded-lg w-full text-black">
           Send Feedback
         </button>
