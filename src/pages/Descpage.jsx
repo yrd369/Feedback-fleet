@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../server/firebase";
@@ -11,8 +11,25 @@ import { IoArrowBack } from "react-icons/io5";
 const Descpage = () => {
   const { register, handleSubmit, formState: errors } = useForm();
   const [value, setValue] = useState("");
+  const [index, setIndex] = useState(1);
   const [comments, setComments] = useState([]);
+  const [show, setShow] = useState(false);
+  const [updatee, setUpdatee] = useState(false);
   const { id } = useParams();
+
+  console.log(index);
+
+  const formShow = () => {
+    setShow(!show);
+    // console.log(show);
+  };
+
+  const updateCommet = (index) => {
+    setUpdatee(!updatee);
+    setIndex(index);
+
+    // var indee = index;
+  };
 
   // getting data from database
   useEffect(() => {
@@ -36,6 +53,28 @@ const Descpage = () => {
     alert("Comment posted");
   };
 
+  async function updateCom(data) {
+    const { userName, feedback, time } = data;
+    const newComment = { userName, feedback, time };
+    const docRef = doc(db, "products", id);
+    await updateDoc(docRef, {
+      comments: [
+        ...comments.slice(0, index),
+        newComment,
+        ...comments.slice(index + 1),
+      ],
+    });
+    location.reload();
+  }
+
+  // const updateCom = async (data) => {
+
+  //   // await updateDoc(doc(db, "products", id), { comments: newComments });
+  //   // console.log(newComments);
+  //   // console.log(data);
+  //   // await updateDoc(docRef, data);
+  // };
+
   // deleting comment
   const handleDel = async (commentIndex) => {
     const updatedComments = [...comments];
@@ -57,12 +96,11 @@ const Descpage = () => {
         <h1 className="font-semibold">{value.productName}</h1>
         <button
           className="bg-[#ED6926] text-white px-4 py-1 rounded-md mt-3"
-          onClick={toggleForm}
+          onClick={formShow}
         >
           Add review
         </button>
       </div>
-
       {comments.length > 0 &&
         comments.map((comment, index) => {
           return (
@@ -128,64 +166,128 @@ const Descpage = () => {
                 </p>
               </div>
               <div className="flex space-x-2 text-2xl">
-                <FaEdit />
+                <FaEdit onClick={() => updateCommet(index)} />
                 <MdDelete className="text-red-600" onClick={handleDel} />
               </div>
             </div>
           );
         })}
-      <form
-        className={
-          "bg-gray-500 p-10 max-w-lg mx-auto rounded-lg mt-10 space-y-5 text-white"
-        }
-        id="form"
-        onSubmit={handleSubmit(sendData)}
-      >
-        <div>
-          <label>Name</label>
+      {show ? (
+        <form
+          className={
+            "bg-gray-500  p-10 max-w-lg mx-auto rounded-lg mt-10 space-y-5 text-white"
+          }
+          id="form"
+          onSubmit={handleSubmit(sendData)}
+        >
+          <div>
+            <label>Name</label>
+            <input
+              className="outline-none px-4 py-1 rounded-md w-full text-black"
+              name="userName"
+              placeholder="Enter your name"
+              {...register("userName", {
+                required: "Name field is required",
+                minLength: {
+                  value: 3,
+                  message: "Message should be more than 3 characters",
+                },
+              })}
+            />
+          </div>
+          <div>
+            <label>Share your thoughts</label>
+            <textarea
+              className="outline-none px-4 py-1 rounded-md w-full text-black"
+              name="feedback"
+              placeholder="Share your thoughts"
+              {...register("feedback", {
+                required: "Feedback field is required",
+                minLength: {
+                  value: 3,
+                  message: "Message should be more than 3 characters",
+                },
+              })}
+            ></textarea>
+            {errors.feedback && (
+              <small className="text-red-500 font-medium">
+                {errors.feedback.message}
+              </small>
+            )}
+          </div>
           <input
-            className="outline-none px-4 py-1 rounded-md w-full text-black"
-            name="userName"
-            placeholder="Enter your name"
-            {...register("userName", {
-              required: "Name field is required",
-              minLength: {
-                value: 3,
-                message: "Message should be more than 3 characters",
-              },
-            })}
+            value={currentTime}
+            className="text-black hidden"
+            name="time"
+            {...register("time")}
           />
-        </div>
+          <button className="bg-green-500 px-4 py-1 rounded-lg w-full text-black">
+            Send Feedback
+          </button>
+        </form>
+      ) : (
+        ""
+      )}
+      {updatee ? (
         <div>
-          <label>Share your thoughts</label>
-          <textarea
-            className="outline-none px-4 py-1 rounded-md w-full text-black"
-            name="feedback"
-            placeholder="Share your thoughts"
-            {...register("feedback", {
-              required: "Feedback field is required",
-              minLength: {
-                value: 3,
-                message: "Message should be more than 3 characters",
-              },
-            })}
-          ></textarea>
-          {errors.feedback && (
-            <small className="text-red-500 font-medium">
-              {errors.feedback.message}
-            </small>
-          )}
+          <form
+            className={
+              "bg-gray-500  p-10 max-w-lg mx-auto rounded-lg mt-10 space-y-5 text-white"
+            }
+            id="form"
+            onSubmit={handleSubmit(updateCom)}
+          >
+            <h1 className="text-center font-semibold">Edit Your Commets</h1>
+
+            <div>
+              <label>Name</label>
+              <input
+                className="outline-none px-4 py-1 rounded-md w-full text-black"
+                name="userName"
+                placeholder="Enter your name"
+                {...register("userName", {
+                  required: "Name field is required",
+                  minLength: {
+                    value: 3,
+                    message: "Message should be more than 3 characters",
+                  },
+                })}
+              />
+            </div>
+            <div>
+              <label>Share your thoughts</label>
+              <textarea
+                className="outline-none px-4 py-1 rounded-md w-full text-black"
+                name="feedback"
+                placeholder="Share your thoughts"
+                {...register("feedback", {
+                  required: "Feedback field is required",
+                  minLength: {
+                    value: 3,
+                    message: "Message should be more than 3 characters",
+                  },
+                })}
+              ></textarea>
+              {errors.feedback && (
+                <small className="text-red-500 font-medium">
+                  {errors.feedback.message}
+                </small>
+              )}
+            </div>
+            <input
+              value={currentTime}
+              className="text-black hidden"
+              name="time"
+              {...register("time")}
+            />
+            <button className="bg-green-500 font-semibold px-4 py-1 rounded-lg w-full text-black">
+              Update Comment
+            </button>
+          </form>
         </div>
-        <input
-          value={currentTime}
-          className="text-black hidden"
-          name="time"
-          {...register("time")}
-        />
-        <button className="bg-green-500 px-4 py-1 rounded-lg w-full text-black">
-          Send Feedback
-        </button>
-      </form>
+      ) : (
+        ""
+      )}
     </>
   );
 };
