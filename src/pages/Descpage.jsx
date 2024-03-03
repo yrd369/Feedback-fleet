@@ -76,9 +76,9 @@ const Descpage = () => {
   // };
 
   // deleting comment
-  const handleDel = async (commentIndex) => {
+  const handleDel = async (index) => {
     const updatedComments = [...comments];
-    updatedComments.splice(commentIndex, 1); // Remove the comment at the specified index
+    updatedComments.splice(index, 1); // Remove the comment at the specified index
     await updateDoc(doc(db, "products", id), { comments: updatedComments });
     setComments(updatedComments);
     alert("Comment deleted");
@@ -167,7 +167,10 @@ const Descpage = () => {
               </div>
               <div className="flex space-x-2 text-2xl">
                 <FaEdit onClick={() => updateCommet(index)} />
-                <MdDelete className="text-red-600" onClick={handleDel} />
+                <MdDelete
+                  className="text-red-600"
+                  onClick={() => handleDel(index)}
+                />
               </div>
             </div>
           );
